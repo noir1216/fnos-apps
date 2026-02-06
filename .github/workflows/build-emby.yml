@@ -85,15 +85,14 @@ jobs:
 
       - name: Build app_root
         run: |
-          mkdir -p app_root/opt/emby-server
-          cp -r emby_extracted/opt/emby-server/* app_root/opt/emby-server/
-          mkdir -p app_root/bin
-          cp apps/emby/fnos/bin/emby-server app_root/bin/
-          cp apps/emby/fnos/EmbyServer.sc app_root/
-          mkdir -p app_root/config
-          cp -r apps/emby/fnos/config/* app_root/config/
-          mkdir -p app_root/ui
-          cp -r apps/emby/fnos/ui/* app_root/ui/
+          src=emby_extracted/opt/emby-server
+          dst=app_root
+          mkdir -p "$dst"
+          for dir in bin etc extra lib licenses share system; do
+            [ -d "$src/$dir" ] && cp -r "$src/$dir" "$dst/"
+          done
+          cp apps/emby/fnos/bin/emby-server "$dst/bin/emby-server"
+          chmod +x "$dst/bin/emby-server"
 
       - name: Create app.tgz
         run: |

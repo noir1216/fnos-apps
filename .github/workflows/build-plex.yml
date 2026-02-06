@@ -89,8 +89,7 @@ jobs:
           cp -r plex_extracted/usr/lib/plexmediaserver/* app_root/usr/lib/plexmediaserver/
           mkdir -p app_root/bin
           cp apps/plex/fnos/bin/plex-server app_root/bin/
-          mkdir -p app_root/ui
-          cp -r apps/plex/fnos/ui/* app_root/ui/
+          chmod +x app_root/bin/plex-server
 
       - name: Create app.tgz
         run: |
