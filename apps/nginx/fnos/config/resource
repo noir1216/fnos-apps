@@ -8,7 +8,7 @@
                 "name": "nginx",
                 "permission": {
                     "rw": [
-                        "nginx"
+                        "nginx-web"
                     ]
                 }
             }
