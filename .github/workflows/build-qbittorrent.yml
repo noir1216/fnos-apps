@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
+      release_tag: ${{ steps.version.outputs.release_tag }}
       revision: ${{ steps.version.outputs.revision }}
       should_build: ${{ steps.version.outputs.should_build }}
     steps:
@@ -35,8 +36,10 @@ jobs:
           if [ -n "${{ github.event.inputs.version }}" ]; then
             VERSION="${{ github.event.inputs.version }}"
             REVISION="${{ github.event.inputs.revision }}"
+            RELEASE_TAG=$(curl -s https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases | jq -r "[.[].tag_name | select(startswith(\"release-${VERSION}\"))][0]")
           else
-            VERSION=$(curl -s https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+            RELEASE_TAG=$(curl -s https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest | jq -r '.tag_name')
+            VERSION=$(echo "$RELEASE_TAG" | sed -n 's/^release-\([^_]*\).*/\1/p')
             REVISION=""
           fi
 
@@ -54,6 +57,7 @@ jobs:
           fi
 
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "release_tag=${RELEASE_TAG}" >> $GITHUB_OUTPUT
           echo "revision=${FINAL_TAG}" >> $GITHUB_OUTPUT
           echo "should_build=${SHOULD_BUILD}" >> $GITHUB_OUTPUT
 
@@ -65,18 +69,18 @@ jobs:
       matrix:
         include:
           - arch: x86
-            binary_prefix: x86_64
+            asset_prefix: x86_64
             manifest_platform: x86
           - arch: arm
-            binary_prefix: aarch64
+            asset_prefix: aarch64
             manifest_platform: arm
     steps:
       - uses: actions/checkout@v4
 
       - name: Download qBittorrent binary
         run: |
-          VERSION="${{ needs.check-version.outputs.version }}"
-          wget -O qbittorrent-nox "https://github.com/userdocs/qbittorrent-nox-static/releases/download/v${VERSION}/qbittorrent-nox-${{ matrix.binary_prefix }}"
+          RELEASE_TAG="${{ needs.check-version.outputs.release_tag }}"
+          wget -O qbittorrent-nox "https://github.com/userdocs/qbittorrent-nox-static/releases/download/${RELEASE_TAG}/${{ matrix.asset_prefix }}-qbittorrent-nox"
           chmod +x qbittorrent-nox
 
       - name: Download GeoDB
