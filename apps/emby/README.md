@@ -18,7 +18,7 @@
 ```bash
 ./update_emby.sh                      # 最新版本，自动检测架构
 ./update_emby.sh --arch x86           # 指定架构
-./update_emby.sh --arch x86 4.8.11.0   # 指定版本
+./update_emby.sh --arch x86 4.8.11.0  # 指定版本
 ./update_emby.sh --help               # 查看帮助
 ```
 
