@@ -17,7 +17,7 @@
 
 ```bash
 ./update_plex.sh                          # 最新版本，自动检测架构
-./update_plex.sh --arch arm               # 指定架构
+./update_plex.sh --arch arm               # 指定架构，arm或x86
 ./update_plex.sh --arch arm 1.42.2.10156  # 指定版本
 ./update_plex.sh --help                   # 查看帮助
 ```
