@@ -4,7 +4,7 @@
 
 ## 下载
 
-从 [Releases](https://github.com/conversun/fnos-apps/releases?q=qbittorrent) 下载 `.fpk` 文件。
+从 [Releases](https://github.com/noir1216/fnos-apps/releases?q=qbittorrent) 下载 `.fpk` 文件。
 
 ## 安装
 
